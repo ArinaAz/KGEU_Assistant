@@ -131,13 +131,13 @@ args = Seq2SeqTrainingArguments(
 data_collator = DataCollatorForSeq2Seq(tokenizer, model=model)
 
 import numpy as np
-
+#Эта функция выполняет постобработку текстовых данных.
 def postprocess_text(preds, labels):
     preds = [pred.strip() for pred in preds]
     labels = [[label.strip()] for label in labels]
 
     return preds, labels
-
+#используется для вычисления метрик на основе предсказанных значений и меток.
 def compute_metrics(eval_preds):
     preds, labels = eval_preds
     if isinstance(preds, tuple):
@@ -158,7 +158,7 @@ def compute_metrics(eval_preds):
     result["gen_len"] = np.mean(prediction_lens)
     result = {k: round(v, 4) for k, v in result.items()}
     return result
-
+#Здесь создается экземпляр класса Seq2SeqTrainer с использованием заданных параметров.
 trainer = Seq2SeqTrainer(
     model,
     args,
