@@ -66,7 +66,7 @@ from transformers import AutoTokenizer
 
 # Инициализация токенизатора
 tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
-
+#устанавливается исходный и цнлнвой языки для токенизатора
 if "mbart" in model_checkpoint:
     tokenizer.src_lang = "en-XX"
     tokenizer.tgt_lang = "ro-RO"
