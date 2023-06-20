@@ -87,11 +87,11 @@ max_input_length = 128
 max_target_length = 128
 source_lang = "ru"
 target_lang = "en"
-
+# выполняет предварительную обработку данных для подготовки модели к обучению или применению.
 def preprocess_function(examples):
-    inputs = [prefix + ex[source_lang] for ex in examples["translation"]]
-    targets = [ex[target_lang] for ex in examples["translation"]]
-    model_inputs = tokenizer(inputs, max_length=max_input_length, truncation=True)
+    inputs = [prefix + ex[source_lang] for ex in examples["translation"]]#формируется список inputs, который содержит предложения на исходном языке. 
+    targets = [ex[target_lang] for ex in examples["translation"]]#формируется список targets, который содержит целевые предложения, представленные в examples["translation"]. Они выбираются по ключу target_lang.
+    model_inputs = tokenizer(inputs, max_length=max_input_length, truncation=True)#используется токенизатор (предположительно ранее инициализированный), чтобы преобразовать список inputs в численное представление, подходящее для подачи на вход модели. Токенизатор разбивает каждое предложение на токены и может выполнять дополнительные операции, такие как ограничение максимальной длины (max_length) и усечение (truncation), если это необходимо.
 
     # Настройка токенизатора для меток
     with tokenizer.as_target_tokenizer():
@@ -113,6 +113,7 @@ model = AutoModelForSeq2SeqLM.from_pretrained(model_checkpoint)
 
 batch_size = 16
 model_name = model_checkpoint.split("/")[-1]
+#создается объект args класса Seq2SeqTrainingArguments, который содержит различные аргументы и настройки для тренировки модели Seq2Seq 
 args = Seq2SeqTrainingArguments(
     f"{model_name}-finetuned-{source_lang}-to-{target_lang}",
     evaluation_strategy="epoch",
